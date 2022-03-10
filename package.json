@@ -24,7 +24,8 @@
   },
   "homepage": "https://github.com/kgierke/formkit-inputs#readme",
   "dependencies": {
-    "@formkit/core": "1.0.0-beta.5"
+    "@formkit/core": "1.0.0-beta.5",
+    "@formkit/inputs": "1.0.0-beta.5"
   },
   "devDependencies": {
     "typescript": "^4.6.2"

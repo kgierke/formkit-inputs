@@ -4,8 +4,9 @@ import imageDefinition from "./inputs/image";
 const formkitInputs: FormKitPlugin = () => {};
 
 formkitInputs.library = (node) => {
-  if (node.props.type === "image") {
-    node.define(imageDefinition);
+  switch (node.props.type) {
+    case "image":
+      return node.define(imageDefinition);
   }
 };
 
