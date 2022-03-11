@@ -73,7 +73,7 @@ export const schema: FormKitInputSchema = {
               attrs: {
                 type: "button",
                 class: "$classes.fileItemRemove",
-                "data-index": "$key",
+                "data-id": "$file.id",
                 onClick: "$handlers.removeFile",
               },
               children: "$ui.remove.value",

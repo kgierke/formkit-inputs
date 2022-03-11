@@ -143,7 +143,7 @@ export default function (node: FormKitNode): void {
 
     node.context.handlers.removeFile = (e: Event) => {
       if (e.target instanceof HTMLButtonElement) {
-        const id = Number(e.target.dataset.id);
+        const id = e.target.dataset.id;
         if (Array.isArray(node.value) && node.value.some((v) => v.id === id)) {
           node.input(node.value.filter((v) => v.id !== id));
           node.store.remove(`filesUploadError_${id}`);
