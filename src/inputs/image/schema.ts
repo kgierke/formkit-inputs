@@ -55,6 +55,7 @@ export const schema: FormKitInputSchema = {
             },
             {
               $el: "span",
+              if: "$file.name",
               attrs: {
                 class: "$classes.fileItemName",
               },
