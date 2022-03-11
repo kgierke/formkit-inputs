@@ -5,6 +5,7 @@ import schema from "./schema";
 
 export const imageDefinition: FormKitTypeDefinition = {
   type: "input",
+  props: ["uploadHandler", "uploadUrl"],
   schema: useSchema(schema),
   features: [features],
 };
