@@ -78,7 +78,7 @@ export default function (node: FormKitNode): void {
           let file = e.target.files[i];
 
           if (file) {
-            const id = nanoid();
+            const _id = nanoid();
             let uploadStatus = {};
             if (hasUploadHandler) {
               uploadStatus = { uploading: true };
@@ -87,20 +87,22 @@ export default function (node: FormKitNode): void {
             if (isMultiple && Array.isArray(node._value)) {
               node.input(
                 mergeArrays(node._value, [
-                  { id, name: file.name, src: file, ...uploadStatus },
+                  { _id, name: file.name, src: file, ...uploadStatus },
                 ])
               );
             } else {
-              node.input([{ id, name: file.name, src: file, ...uploadStatus }]);
+              node.input([
+                { _id, name: file.name, src: file, ...uploadStatus },
+              ]);
             }
 
             if (hasUploadHandler) {
               node.store.set(
                 createMessage({
                   blocking: true,
-                  key: `filesUploading_${id}`,
+                  key: `filesUploading_${_id}`,
                   type: "boolean",
-                  value: `filesUploading_${id}`,
+                  value: `filesUploading_${_id}`,
                   visible: false,
                 })
               );
@@ -109,10 +111,10 @@ export default function (node: FormKitNode): void {
                 .then((src) => {
                   if (isMultiple && Array.isArray(node._value)) {
                     node.input(
-                      mergeArrays(node._value, [{ id, name: file.name, src }])
+                      mergeArrays(node._value, [{ _id, name: file.name, src }])
                     );
                   } else {
-                    node.input([{ id, name: file.name, src }]);
+                    node.input([{ _id, name: file.name, src }]);
                   }
                 })
                 .catch((err) => {
@@ -123,14 +125,14 @@ export default function (node: FormKitNode): void {
                   node.store.set(
                     createMessage({
                       blocking: true,
-                      key: `filesUploadError_${id}`,
+                      key: `filesUploadError_${_id}`,
                       type: "string",
                       value: err,
                       visible: true,
                     })
                   );
                 })
-                .finally(() => node.store.remove(`filesUploading_${id}`));
+                .finally(() => node.store.remove(`filesUploading_${_id}`));
             }
           }
         }
@@ -143,10 +145,13 @@ export default function (node: FormKitNode): void {
 
     node.context.handlers.removeFile = (e: Event) => {
       if (e.target instanceof HTMLButtonElement) {
-        const id = e.target.dataset.id;
-        if (Array.isArray(node.value) && node.value.some((v) => v.id === id)) {
-          node.input(node.value.filter((v) => v.id !== id));
-          node.store.remove(`filesUploadError_${id}`);
+        const _id = e.target.dataset.id;
+        if (
+          Array.isArray(node.value) &&
+          node.value.some((v) => v._id === _id)
+        ) {
+          node.input(node.value.filter((v) => v._id !== _id));
+          node.store.remove(`filesUploadError_${_id}`);
         }
       }
     };
