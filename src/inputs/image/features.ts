@@ -105,7 +105,7 @@ export default function (node: FormKitNode): void {
                 })
               );
 
-              Promise.resolve(node.props.uploadHandler(file))
+              Promise.resolve(node.props.uploadHandler(file, node))
                 .then((src) => {
                   if (isMultiple && Array.isArray(node._value)) {
                     node.input(
