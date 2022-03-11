@@ -40,7 +40,7 @@ function preventStrayDrop(type: string, e: Event) {
 }
 
 function mergeArrays(arr1: any[], arr2: any[]) {
-  return arr2.concat(arr1.filter((v) => !arr2.some((v2) => v2.id === v.id)));
+  return arr2.concat(arr1.filter((v) => !arr2.some((v2) => v2._id === v._id)));
 }
 
 export default function (node: FormKitNode): void {
