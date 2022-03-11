@@ -4,7 +4,7 @@ import { createFormKitInputsPluginOptions } from "./typings";
 
 function createFormKitInputsPlugin({
   uploadHandler = undefined,
-}: createFormKitInputsPluginOptions): FormKitPlugin {
+}: createFormKitInputsPluginOptions = {}): FormKitPlugin {
   const plugin = (node: FormKitNode): void => {
     if (node.props.type === "image") {
       node.config.uploadHandler = uploadHandler;
