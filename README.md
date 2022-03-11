@@ -72,7 +72,7 @@ The `image` input type is an alternative to the `file` input type. It allows you
   </FormKit>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { FormKit } from "@formkit/vue";
 
 const uploadHandler = async (file: File) => {
