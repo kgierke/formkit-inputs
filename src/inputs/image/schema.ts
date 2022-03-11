@@ -63,6 +63,7 @@ export const schema: FormKitInputSchema = {
             },
             {
               $el: "span",
+              if: "$uploadHandler",
               children: {
                 if: "$file.uploading",
                 then: "$ui.uploading.value",
