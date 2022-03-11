@@ -1,13 +1,24 @@
-import { FormKitPlugin } from "@formkit/core";
+import { FormKitNode, FormKitPlugin } from "@formkit/core";
 import imageDefinition from "./inputs/image";
+import { createFormKitInputsPluginOptions } from "./typings";
 
-const formkitInputs: FormKitPlugin = () => {};
+function createFormKitInputsPlugin({
+  uploadHandler = undefined,
+}: createFormKitInputsPluginOptions): FormKitPlugin {
+  const plugin = (node: FormKitNode): void => {
+    if (node.props.type === "image") {
+      node.config.uploadHandler = uploadHandler;
+    }
+  };
 
-formkitInputs.library = (node) => {
-  switch (node.props.type) {
-    case "image":
-      return node.define(imageDefinition);
-  }
-};
+  plugin.library = (node: FormKitNode) => {
+    switch (node.props.type) {
+      case "image":
+        return node.define(imageDefinition);
+    }
+  };
 
-export default formkitInputs;
+  return plugin;
+}
+
+export default createFormKitInputsPlugin;

@@ -1,5 +1,7 @@
-import { FormKitNode } from "@formkit/core";
+import { createMessage, FormKitNode } from "@formkit/core";
+import { UploadHandler } from "../../typings";
 import localize from "../../utils/localize";
+import { nanoid } from "nanoid";
 
 declare global {
   interface Window {
@@ -37,9 +39,15 @@ function preventStrayDrop(type: string, e: Event) {
   }
 }
 
+function mergeArrays(arr1: any[], arr2: any[]) {
+  return arr2.concat(arr1.filter((v) => !arr2.some((v2) => v2.id === v.id)));
+}
+
 export default function (node: FormKitNode): void {
   localize("noFiles", "No files")(node);
   localize("remove")(node);
+  localize("uploading", "Uploading...")(node);
+  localize("uploaded", "Uploaded")(node);
 
   if (isBrowser) {
     if (!window._FormKit_File_Drop) {
@@ -60,25 +68,71 @@ export default function (node: FormKitNode): void {
 
     if (!node.context) return;
 
-    node.context.handlers.files = (e: Event) => {
-      const files = [];
+    const isMultiple = Object.hasOwnProperty.call(node.props.attrs, "multiple");
+    const hasUploadHandler =
+      node.props.uploadHandler && node.props.uploadHandler instanceof Function;
 
+    node.context.handlers.files = (e: Event) => {
       if (e.target instanceof HTMLInputElement && e.target.files) {
         for (let i = 0; i < e.target.files.length; i++) {
-          let file;
+          let file = e.target.files[i];
 
-          if ((file = e.target.files.item(i))) {
-            files.push({ name: file.name, src: file });
+          if (file) {
+            const id = nanoid();
+            let uploadStatus = {};
+            if (hasUploadHandler) {
+              uploadStatus = { uploading: true };
+            }
+
+            if (isMultiple && Array.isArray(node._value)) {
+              node.input(
+                mergeArrays(node._value, [
+                  { id, name: file.name, src: file, ...uploadStatus },
+                ])
+              );
+            } else {
+              node.input([{ id, name: file.name, src: file, ...uploadStatus }]);
+            }
+
+            if (hasUploadHandler) {
+              node.store.set(
+                createMessage({
+                  blocking: true,
+                  key: `filesUploading_${id}`,
+                  type: "boolean",
+                  value: `filesUploading_${id}`,
+                  visible: false,
+                })
+              );
+
+              Promise.resolve(node.props.uploadHandler(file))
+                .then((src) => {
+                  if (isMultiple && Array.isArray(node._value)) {
+                    node.input(
+                      mergeArrays(node._value, [{ id, name: file.name, src }])
+                    );
+                  } else {
+                    node.input([{ id, name: file.name, src }]);
+                  }
+                })
+                .catch((err) => {
+                  console.error(
+                    "File Could not be uploaded, see the following details:",
+                    err
+                  );
+                  node.store.set(
+                    createMessage({
+                      blocking: true,
+                      key: `filesUploadError_${id}`,
+                      type: "string",
+                      value: err,
+                      visible: true,
+                    })
+                  );
+                })
+                .finally(() => node.store.remove(`filesUploading_${id}`));
+            }
           }
-        }
-
-        if (
-          Array.isArray(node.value) &&
-          Object.hasOwnProperty.call(node.props.attrs, "multiple")
-        ) {
-          node.input([...files, ...node.value], false);
-        } else {
-          node.input(files);
         }
       }
 
@@ -89,9 +143,10 @@ export default function (node: FormKitNode): void {
 
     node.context.handlers.removeFile = (e: Event) => {
       if (e.target instanceof HTMLButtonElement) {
-        const index = Number(e.target.dataset.index);
-        if (Array.isArray(node.value) && node.value[index]) {
-          node.input(node.value.filter((_, i) => i !== index));
+        const id = Number(e.target.dataset.id);
+        if (Array.isArray(node.value) && node.value.some((v) => v.id === id)) {
+          node.input(node.value.filter((v) => v.id !== id));
+          node.store.remove(`filesUploadError_${id}`);
         }
       }
     };

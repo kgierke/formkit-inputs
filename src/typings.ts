@@ -1,10 +1,5 @@
-import {
-  FormKitExtendableSchemaRoot,
-  FormKitSchemaCondition,
-  FormKitSchemaNode,
-} from "@formkit/core";
+export type UploadHandler = (file: File) => Promise<string> | string;
 
-export type FormKitSchema =
-  | FormKitSchemaNode[]
-  | FormKitExtendableSchemaRoot
-  | FormKitSchemaCondition;
+export interface createFormKitInputsPluginOptions {
+  uploadHandler?: UploadHandler;
+}

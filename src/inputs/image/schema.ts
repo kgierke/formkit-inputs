@@ -61,6 +61,14 @@ export const schema: FormKitInputSchema = {
               children: "$file.name",
             },
             {
+              $el: "span",
+              children: {
+                if: "$file.uploading",
+                then: "$ui.uploading.value",
+                else: "$ui.uploaded.value",
+              },
+            },
+            {
               $el: "button",
               attrs: {
                 type: "button",
