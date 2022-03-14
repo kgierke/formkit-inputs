@@ -1,5 +1,8 @@
 ---
 title: Image Input
+prev:
+  text: Configuration
+  link: /reference/configuration
 ---
 
 # {{ $frontmatter.title }}
@@ -8,11 +11,11 @@ title: Image Input
 
 The image input accepts the following options:
 
-| Property      | Type     | Default | Description                                                                                                                                                                                                                     |
-| ------------- | -------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| uploadHandler | Function | -       | A function that receives the HTML5 `File` object as first argument and expects an src string as return value. The uploadHandler function can also be defined globally for all image uploads, see the plugin [Configuration](/). |
-| multiple      | Boolean  | false   | Allow multiple images to be selected.                                                                                                                                                                                           |
-| accept        | String   | -       | A comma separated list of accepted MIME types. [MDN Docs](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/file#accept).                                                                                         |
+| Property      | Type     | Default | Description                                                                                                                                                                                                                                            |
+| ------------- | -------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| uploadHandler | Function | -       | A function that receives the HTML5 `File` object as first argument and expects an src string as return value. The uploadHandler function can also be defined globally for all image uploads, see the plugin [Configuration](/reference/configuration). |
+| multiple      | Boolean  | false   | Allow multiple images to be selected.                                                                                                                                                                                                                  |
+| accept        | String   | -       | A comma separated list of accepted MIME types. [MDN Docs](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/file#accept).                                                                                                                |
 
 **_Note:_** _All other props are passed directly to the `<input type="file">` element._
 

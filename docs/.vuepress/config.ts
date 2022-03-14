@@ -8,13 +8,14 @@ export default {
     docsDir: "docs",
     navbar: [
       { text: "Home", link: "/" },
+      { text: "Guide", link: "/guide/getting-started" },
       {
         text: "Reference",
         children: [
-          { text: "Configuration", link: "/config" },
+          { text: "Configuration", link: "/reference/configuration" },
           {
             text: "Inputs",
-            children: [{ text: "Image", link: "/inputs/image" }],
+            children: [{ text: "Image", link: "/reference/inputs/image" }],
           },
         ],
       },
