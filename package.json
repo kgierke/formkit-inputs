@@ -6,7 +6,9 @@
   "types": "dist/index.d.ts",
   "type": "module",
   "scripts": {
-    "build": "tsc -p tsconfig.json"
+    "build": "tsc -p tsconfig.json",
+    "docs:dev": "vuepress dev docs",
+    "docs:build": "vuepress build docs"
   },
   "repository": {
     "type": "git",
@@ -29,6 +31,9 @@
     "nanoid": "^3.3.1"
   },
   "devDependencies": {
-    "typescript": "^4.6.2"
+    "@formkit/vue": "1.0.0-beta.6",
+    "typescript": "^4.6.2",
+    "vitepress": "0.22.3",
+    "vuepress": "2.0.0-beta.36"
   }
 }
