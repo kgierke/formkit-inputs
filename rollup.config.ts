@@ -17,6 +17,7 @@ export default [
         sourcemap: true,
       },
     ],
+    external: ["@formkit/core", "@formkit/inputs", "nanoid"],
     plugins: [typescript({ tsconfig: "./tsconfig.json" })],
   },
   {
