@@ -37,7 +37,7 @@ Initialize FormKit with the plugin:
 import createApp from "vue";
 import App from "./App.vue";
 import { defaultConfig, plugin } from "@formkit/vue";
-import createFormKitInputsPlugin from "@kgierke/formkit-inputs";
+import { createFormKitInputsPlugin } from "@kgierke/formkit-inputs";
 
 const formKitInputPlugin = createFormKitInputsPlugin();
 

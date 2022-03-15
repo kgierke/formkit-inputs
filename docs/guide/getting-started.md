@@ -37,7 +37,7 @@ After you've installed the package it's time to set it up. The minimal setup req
 import createApp from "vue";
 import App from "./App.vue";
 import { defaultConfig, plugin } from "@formkit/vue";
-import createFormKitInputsPlugin from "@kgierke/formkit-inputs";
+import { createFormKitInputsPlugin } from "@kgierke/formkit-inputs";
 
 const formKitInputPlugin = createFormKitInputsPlugin();
 
