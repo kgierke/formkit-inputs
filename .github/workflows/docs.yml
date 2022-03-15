@@ -33,7 +33,6 @@ jobs:
 
       # install dependencies if the cache did not hit
       - name: Install dependencies
-        if: steps.npm-cache.outputs.cache-hit != 'true'
         run: npm ci
 
       # run build script
