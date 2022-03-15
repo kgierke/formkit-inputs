@@ -2,7 +2,7 @@ import { FormKitNode, FormKitPlugin } from "@formkit/core";
 import imageDefinition from "./inputs/image";
 import { createFormKitInputsPluginOptions } from "./typings";
 
-function createFormKitInputsPlugin({
+export function createFormKitInputsPlugin({
   uploadHandler = undefined,
 }: createFormKitInputsPluginOptions = {}): FormKitPlugin {
   const plugin = (node: FormKitNode): void => {
@@ -20,5 +20,3 @@ function createFormKitInputsPlugin({
 
   return plugin;
 }
-
-export default createFormKitInputsPlugin;
