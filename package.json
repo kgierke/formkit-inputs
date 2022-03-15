@@ -26,10 +26,12 @@
     "url": "https://github.com/kgierke/formkit-inputs/issues"
   },
   "homepage": "https://github.com/kgierke/formkit-inputs#readme",
+  "peerDependencies": {
+    "@formkit/core": "1.0.0-beta.6",
+    "@formkit/inputs": "1.0.0-beta.6"
+  },
   "dependencies": {
-    "@formkit/core": "1.0.0-beta.5",
-    "@formkit/inputs": "1.0.0-beta.5",
-    "nanoid": "^3.3.1"
+    "nanoid": "3.3.1"
   },
   "devDependencies": {
     "@formkit/vue": "1.0.0-beta.6",
@@ -38,7 +40,7 @@
     "rollup": "2.70.1",
     "rollup-plugin-delete": "2.0.0",
     "rollup-plugin-dts": "4.2.0",
-    "typescript": "^4.6.2",
+    "typescript": "4.6.2",
     "vitepress": "0.22.3",
     "vuepress": "2.0.0-beta.36"
   }
