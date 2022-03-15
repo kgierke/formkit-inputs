@@ -1,0 +1,67 @@
+.formkit-outer[data-type="image"] .formkit-inner {
+  display: block;
+  box-shadow: none;
+  width: 100%;
+}
+
+.formkit-outer[data-type="image"] .formkit-uploader {
+  border-radius: 0.5rem;
+  border: 1px dashed var(--fk-color-border, #000000);
+  position: relative;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  text-align: center;
+  width: 100%;
+}
+
+.formkit-outer[data-type="image"] .formkit-input {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.formkit-outer[data-type="image"] .formkit-file-list {
+  padding: 0;
+}
+
+.formkit-outer[data-type="image"] .formkit-file-item {
+  border: 1px solid var(--fk-color-border, #000000);
+  border-radius: 0.5rem;
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+  padding: 0.5rem;
+}
+
+.formkit-outer[data-type="image"] .formkit-file-item-image {
+  width: 3rem;
+  height: 3rem;
+  border-radius: 0.5rem;
+  background-color: #ececec;
+  background-size: cover;
+  background-position: center;
+  margin-right: 1rem;
+}
+
+.formkit-outer[data-type="image"] .formkit-file-item-name {
+  margin-right: 1rem;
+}
+
+.formkit-outer[data-type="image"] .formkit-file-item-remove {
+  appearance: none;
+  background: none;
+  border: 0;
+  font-weight: bold;
+  box-shadow: none;
+  margin-left: auto;
+  cursor: pointer;
+}
+
+.formkit-outer[data-type="image"] .formkit-file-item-remove:hover,
+.formkit-outer[data-type="image"] .formkit-file-item-remove:focus {
+  text-decoration: underline;
+}
