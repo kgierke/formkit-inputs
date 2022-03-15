@@ -1,6 +1,7 @@
 import { FormKitNode, FormKitPlugin } from "@formkit/core";
 import imageDefinition from "./inputs/image";
 import { createFormKitInputsPluginOptions } from "./typings";
+import "./theme.css";
 
 export function createFormKitInputsPlugin({
   uploadHandler = undefined,
