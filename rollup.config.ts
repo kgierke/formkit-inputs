@@ -1,6 +1,7 @@
 import typescript from "@rollup/plugin-typescript";
 import dts from "rollup-plugin-dts";
 import del from "rollup-plugin-delete";
+import postcss from "rollup-plugin-postcss";
 
 export default [
   {
@@ -18,14 +19,18 @@ export default [
       },
     ],
     external: ["@formkit/core", "@formkit/inputs", "nanoid"],
-    plugins: [typescript({ tsconfig: "./tsconfig.json" })],
+    plugins: [
+      typescript({ tsconfig: "./tsconfig.json" }),
+      postcss({
+        modules: true,
+        extract: "theme.css",
+      }),
+    ],
   },
   {
     input: "./dist/dts/index.d.ts",
     output: [{ file: "dist/index.d.ts", format: "es" }],
-    plugins: [
-      dts(),
-      del({ hook: "buildEnd", targets: "./dist/dts" }), //<------ New Addition
-    ],
+    external: ["./theme.css"],
+    plugins: [dts(), del({ hook: "buildEnd", targets: "./dist/dts" })],
   },
 ];
