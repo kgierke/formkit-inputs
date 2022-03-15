@@ -1,7 +1,7 @@
 ---
 next:
-  text: Configuration
-  link: /reference/configuration
+  text: Default theme
+  link: /guide/default-theme
 ---
 
 # How to use

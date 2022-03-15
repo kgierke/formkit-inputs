@@ -7,7 +7,13 @@ export default {
     docsDir: "docs",
     navbar: [
       { text: "Home", link: "/" },
-      { text: "Guide", link: "/guide/getting-started" },
+      {
+        text: "Guide",
+        children: [
+          { text: "Getting started", link: "/guide/getting-started" },
+          { text: "Default theme", link: "/guide/default-theme" },
+        ],
+      },
       {
         text: "Reference",
         children: [
