@@ -41,7 +41,7 @@ export const schema: FormKitInputSchema = {
       children: [
         {
           $el: "li",
-          for: ["file", "key", "$value"],
+          for: ["fileItem", "key", "$value"],
           attrs: {
             class: "$classes.fileItem",
           },
@@ -50,22 +50,22 @@ export const schema: FormKitInputSchema = {
               $el: "img",
               attrs: {
                 class: "$classes.fileItemImage",
-                src: "$fns.getPreviewUrl($file.src)",
+                src: "$fns.getPreviewUrl($fileItem)",
               },
             },
             {
               $el: "span",
-              if: "$file.name",
+              if: "$fns.getKey($fileItem, 'name')",
               attrs: {
                 class: "$classes.fileItemName",
               },
-              children: "$file.name",
+              children: "$fns.getKey($fileItem, 'name')",
             },
             {
               $el: "span",
               if: "$uploadHandler",
               children: {
-                if: "$file.uploading",
+                if: "$fileItem.uploading",
                 then: "$ui.uploading.value",
                 else: "$ui.uploaded.value",
               },
@@ -75,7 +75,7 @@ export const schema: FormKitInputSchema = {
               attrs: {
                 type: "button",
                 class: "$classes.fileItemRemove",
-                "data-id": "$file._id",
+                "data-id": "$fns.getKey($fileItem, 'id')",
                 onClick: "$handlers.removeFile",
               },
               children: "$ui.remove.value",

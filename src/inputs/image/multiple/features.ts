@@ -40,6 +40,9 @@ export default function (node: FormKitNode): void {
 
     const hasUploadHandler =
       node.props.uploadHandler && node.props.uploadHandler instanceof Function;
+    const idKey = node.props.idKey;
+    const nameKey = node.props.nameKey;
+    const srcKey = node.props.srcKey;
 
     node.context.handlers.files = (e: Event) => {
       if (e.target instanceof HTMLInputElement && e.target.files) {
@@ -55,7 +58,12 @@ export default function (node: FormKitNode): void {
 
             node.input(
               mergeArrays(node._value as any[], [
-                { _id, name: file.name, src: file, ...uploadStatus },
+                {
+                  [idKey]: _id,
+                  [nameKey]: file.name,
+                  [srcKey]: file,
+                  ...uploadStatus,
+                },
               ])
             );
 
@@ -74,7 +82,7 @@ export default function (node: FormKitNode): void {
                 .then((src) => {
                   node.input(
                     mergeArrays(node._value as any[], [
-                      { _id, name: file.name, src },
+                      { [idKey]: _id, [nameKey]: file.name, [srcKey]: src },
                     ])
                   );
                 })
@@ -109,20 +117,36 @@ export default function (node: FormKitNode): void {
         const _id = e.target.dataset.id;
         if (
           Array.isArray(node.value) &&
-          node.value.some((v) => v._id === _id)
+          node.value.some((v) => v[idKey] === _id)
         ) {
-          node.input(node.value.filter((v) => v._id !== _id));
+          node.input(node.value.filter((v) => v[idKey] !== _id));
           node.store.remove(`filesUploadError_${_id}`);
         }
       }
     };
 
-    node.context.fns.getPreviewUrl = (src: string | File) => {
+    node.context.fns.getPreviewUrl = (item: Record<string, string | File>) => {
+      const src = item[srcKey];
       if (typeof src === "string") {
         return src;
       } else if (src instanceof File) {
         return URL.createObjectURL(src);
       }
+    };
+
+    node.context.fns.getKey = (
+      item: Record<string, string | File>,
+      key: string
+    ) => {
+      const keys: Record<string, string> = {
+        id: idKey,
+        name: nameKey,
+        src: srcKey,
+      };
+
+      console.log(item[keys[key]], key);
+
+      return item[keys[key]];
     };
   });
 }
