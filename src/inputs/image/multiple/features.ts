@@ -151,8 +151,6 @@ export default function (node: FormKitNode): void {
         src: srcKey,
       };
 
-      console.log(item[keys[key]], key);
-
       return item[keys[key]];
     };
   });
