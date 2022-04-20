@@ -1,41 +1,11 @@
 import { createMessage, FormKitNode } from "@formkit/core";
-import { UploadHandler } from "../../typings";
-import localize from "../../utils/localize";
+import localize from "../../../utils/localize";
 import { nanoid } from "nanoid";
+import { isBrowser, preventStrayDrop, removeHover } from "../shared";
 
 declare global {
   interface Window {
     _FormKit_File_Drop: boolean;
-  }
-}
-
-const isBrowser = typeof window !== "undefined";
-
-/**
- * Remove the data-file-hover attribute from the target.
- * @param e - Event
- */
-function removeHover(e: Event) {
-  if (
-    e.target instanceof HTMLElement &&
-    e.target.hasAttribute("data-file-hover")
-  ) {
-    e.target.removeAttribute("data-file-hover");
-  }
-}
-
-/**
- * Prevent stray drag/drop events from navigating the window.
- * @param e - Event
- */
-function preventStrayDrop(type: string, e: Event) {
-  if (!(e.target instanceof HTMLInputElement)) {
-    e.preventDefault();
-  } else if (type === "dragover") {
-    e.target.setAttribute("data-file-hover", "true");
-  }
-  if (type === "drop") {
-    removeHover(e);
   }
 }
 
@@ -68,9 +38,11 @@ export default function (node: FormKitNode): void {
 
     if (!node.context) return;
 
-    const isMultiple = Object.hasOwnProperty.call(node.props.attrs, "multiple");
     const hasUploadHandler =
       node.props.uploadHandler && node.props.uploadHandler instanceof Function;
+    const idKey = node.props.idKey;
+    const nameKey = node.props.nameKey;
+    const srcKey = node.props.srcKey;
 
     node.context.handlers.files = (e: Event) => {
       if (e.target instanceof HTMLInputElement && e.target.files) {
@@ -84,17 +56,16 @@ export default function (node: FormKitNode): void {
               uploadStatus = { uploading: true };
             }
 
-            if (isMultiple && Array.isArray(node._value)) {
-              node.input(
-                mergeArrays(node._value, [
-                  { _id, name: file.name, src: file, ...uploadStatus },
-                ])
-              );
-            } else {
-              node.input([
-                { _id, name: file.name, src: file, ...uploadStatus },
-              ]);
-            }
+            node.input(
+              mergeArrays(node._value as any[], [
+                {
+                  [idKey]: _id,
+                  [nameKey]: file.name,
+                  [srcKey]: file,
+                  ...uploadStatus,
+                },
+              ])
+            );
 
             if (hasUploadHandler) {
               node.store.set(
@@ -109,13 +80,11 @@ export default function (node: FormKitNode): void {
 
               Promise.resolve(node.props.uploadHandler(file, node))
                 .then((src) => {
-                  if (isMultiple && Array.isArray(node._value)) {
-                    node.input(
-                      mergeArrays(node._value, [{ _id, name: file.name, src }])
-                    );
-                  } else {
-                    node.input([{ _id, name: file.name, src }]);
-                  }
+                  node.input(
+                    mergeArrays(node._value as any[], [
+                      { [idKey]: _id, [nameKey]: file.name, [srcKey]: src },
+                    ])
+                  );
                 })
                 .catch((err) => {
                   console.error(
@@ -135,6 +104,13 @@ export default function (node: FormKitNode): void {
                 .finally(() => node.store.remove(`filesUploading_${_id}`));
             }
           }
+
+          /**
+           * Reset the input element. See: https://github.com/kgierke/formkit-inputs/issues/8
+           */
+          if (i === e.target.files.length - 1) {
+            e.target.value = "";
+          }
         }
       }
 
@@ -148,20 +124,36 @@ export default function (node: FormKitNode): void {
         const _id = e.target.dataset.id;
         if (
           Array.isArray(node.value) &&
-          node.value.some((v) => v._id === _id)
+          node.value.some((v) => v[idKey] === _id)
         ) {
-          node.input(node.value.filter((v) => v._id !== _id));
+          node.input(node.value.filter((v) => v[idKey] !== _id));
           node.store.remove(`filesUploadError_${_id}`);
         }
       }
     };
 
-    node.context.fns.getPreviewUrl = (src: string | File) => {
+    node.context.fns.getPreviewUrl = (item: Record<string, string | File>) => {
+      const src = item[srcKey];
       if (typeof src === "string") {
         return src;
       } else if (src instanceof File) {
         return URL.createObjectURL(src);
       }
+    };
+
+    node.context.fns.getKey = (
+      item: Record<string, string | File>,
+      key: string
+    ) => {
+      const keys: Record<string, string> = {
+        id: idKey,
+        name: nameKey,
+        src: srcKey,
+      };
+
+      console.log(item[keys[key]], key);
+
+      return item[keys[key]];
     };
   });
 }

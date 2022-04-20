@@ -27,7 +27,27 @@ const formKitInputPlugin = createFormKitInputsPlugin({
      * The uploadHandler receives the HTML5 `File` object
      * as first argument and expects an src string as return value.
      */
-    uploadHandler: (file: File) => Promise<string> | string,
+    uploadHandler: (file: File, node: FormKitNode) => Promise<string> | string = undefined,
+    /**
+     * Default image input type configuration can be overwritten with the following properties.
+     */
+    image: {
+      /**
+       * Overwrites the default key for the image id in the form data.
+       * (Only applies for image inputs which accept *multiple images.)
+       */
+      idKey: string = "_id",
+      /**
+       * Overwrites the default key for the image name in the form data.
+       * (Only applies for image inputs which accept multiple images.)
+       */
+      nameKey: string = "name",
+      /**
+       * Overwrites the default key for the image src in the form data.
+       * (Only applies for image inputs which accept multiple images.)
+       */
+      srcKey: string = "src",
+    }
 }
 ```
 

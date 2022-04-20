@@ -7,4 +7,9 @@ export type UploadHandler = (
 
 export interface createFormKitInputsPluginOptions {
   uploadHandler?: UploadHandler;
+  image?: {
+    idKey?: string;
+    nameKey?: string;
+    srcKey?: string;
+  };
 }
