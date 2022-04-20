@@ -77,6 +77,11 @@ export default function (node: FormKitNode): void {
                 .finally(() => node.store.remove("fileUploading"));
             }
           }
+
+          /**
+           * Reset the input element. See: https://github.com/kgierke/formkit-inputs/issues/8
+           */
+          e.target.value = "";
         }
       }
 
