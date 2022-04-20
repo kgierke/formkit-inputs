@@ -1,5 +1,6 @@
 import { FormKitNode, FormKitPlugin } from "@formkit/core";
-import imageDefinition from "./inputs/image";
+import imageSingleDefinition from "./inputs/image/single";
+import imageMultipleDefinition from "./inputs/image/multiple";
 import { createFormKitInputsPluginOptions } from "./typings";
 import "./theme.css";
 
@@ -15,7 +16,9 @@ export function createFormKitInputsPlugin({
   plugin.library = (node: FormKitNode) => {
     switch (node.props.type) {
       case "image":
-        return node.define(imageDefinition);
+        return Object.hasOwnProperty.call(node.props.attrs, "multiple")
+          ? node.define(imageMultipleDefinition)
+          : node.define(imageSingleDefinition);
     }
   };
 

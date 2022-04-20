@@ -37,7 +37,13 @@ In its standard form the image input type allows you to upload an image and have
 
 **Output:**
 
-<FormKit type="image" label="Single Image" />
+<FormKit type="image" label="Single Image" v-model="singleImageWithoutUploadHandler" />
+
+**Value:**
+
+<pre>
+{{ singleImageWithoutUploadHandler }}
+</pre>
 
 ### Single Image with uploader
 
@@ -47,13 +53,19 @@ The image input also accepts an optional uploadHandler function. If present, the
 
 ```vue
 <template>
-  <FormKit type="image" label="Single Image" />
+  <FormKit type="image" label="Single Image" upload-handler="fakeUpload" />
 </template>
 ```
 
 **Output:**
 
-<FormKit type="image" label="Single Image" />
+<FormKit type="image" label="Single Image" v-model="singleImageWithUploadHandler" :upload-handler="fakeUpload" />
+
+**Value:**
+
+<pre>
+{{ singleImageWithUploadHandler }}
+</pre>
 
 ### Multiple Images
 
@@ -63,13 +75,19 @@ You can also upload multiple images and get a list of all selected images with p
 
 ```vue
 <template>
-  <FormKit type="image" label="Single Image" multiple />
+  <FormKit type="image" label="Multiple Images" multiple />
 </template>
 ```
 
 **Output:**
 
-<FormKit type="image" label="Single Image" multiple />
+<FormKit type="image" label="Multiple Images" multiple v-model="multipleImagesWithoutUploadHandler" />
+
+**Value:**
+
+<pre>
+{{ multipleImagesWithoutUploadHandler }}
+</pre>
 
 ### Multiple Images with uploader
 
@@ -79,10 +97,45 @@ Similar to the single image with uploader the multiple image input type also acc
 
 ```vue
 <template>
-  <FormKit type="image" label="Single Image" multiple />
+  <FormKit
+    type="image"
+    label="Multiple Images"
+    multiple
+    upload-handler="fakeUpload"
+  />
 </template>
 ```
 
 **Output:**
 
-<FormKit type="image" label="Single Image" multiple />
+<FormKit 
+  v-model="multipleImagesWithUploadHandler"
+  type="image"
+  label="Multiple Images"
+  multiple
+  :upload-handler="fakeUpload"
+/>
+
+**Value:**
+
+<pre>
+{{ multipleImagesWithUploadHandler }}
+</pre>
+
+<script setup>
+  import { ref } from 'vue';
+  
+  const singleImageWithoutUploadHandler = ref("");
+  const singleImageWithUploadHandler = ref("");
+  const multipleImagesWithoutUploadHandler = ref([]);
+  const multipleImagesWithUploadHandler = ref([]);
+
+  const fakeUpload = (file) => {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        const result = URL.createObjectURL(file);
+        resolve(result);
+      }, 1000);
+    });
+  };
+</script>
