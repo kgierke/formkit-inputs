@@ -1,6 +1,6 @@
-import { FormKitInputSchema } from "@formkit/inputs";
+import { createSection } from "@formkit/inputs";
 
-export const schema: FormKitInputSchema = {
+export const schema = createSection("input", () => ({
   $el: "div",
   attrs: {
     class: "$classes.container",
@@ -73,6 +73,6 @@ export const schema: FormKitInputSchema = {
       ],
     },
   ],
-};
+}));
 
 export default schema;
