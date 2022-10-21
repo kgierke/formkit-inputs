@@ -1,9 +1,9 @@
-export default {
+import { defaultTheme, defineUserConfig } from "vuepress";
+
+export default defineUserConfig({
   title: "FormKit Inputs",
   description: "A collection of additional input types to use with FormKit.",
-  theme: "@vuepress/theme-default",
-  base: "/formkit-inputs/",
-  themeConfig: {
+  theme: defaultTheme({
     repo: "kgierke/formkit-inputs",
     docsDir: "docs",
     navbar: [
@@ -21,11 +21,14 @@ export default {
           { text: "Configuration", link: "/reference/configuration" },
           {
             text: "Inputs",
+            children: [
             children: [{ text: "Image", link: "/reference/inputs/image" }],
+            ],
           },
         ],
       },
     ],
     editLink: true,
-  },
-};
+  }),
+  base: "/formkit-inputs/",
+});
