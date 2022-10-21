@@ -18,7 +18,10 @@
     "prebuild": "rimraf dist",
     "build": "rollup --config",
     "docs:dev": "vuepress dev docs",
-    "docs:build": "vuepress build docs"
+    "docs:build": "vuepress build docs",
+    "publish:patch": "npm run build && npm version patch && npm publish --access public",
+    "publish:minor": "npm run build && npm version minor && npm publish --access public",
+    "publish:major": "npm run build && npm version major && npm publish --access public"
   },
   "repository": {
     "type": "git",
