@@ -21,9 +21,7 @@ export default defineUserConfig({
           { text: "Configuration", link: "/reference/configuration" },
           {
             text: "Inputs",
-            children: [
             children: [{ text: "Image", link: "/reference/inputs/image" }],
-            ],
           },
         ],
       },
