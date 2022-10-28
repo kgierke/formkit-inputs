@@ -9,8 +9,10 @@ declare global {
   }
 }
 
-function mergeArrays(arr1: any[], arr2: any[]) {
-  return arr2.concat(arr1.filter((v) => !arr2.some((v2) => v2._id === v._id)));
+function mergeArrays(arr1: any[], arr2: any[], idKey: string) {
+  return arr2.concat(
+    arr1.filter((v) => !arr2.some((v2) => v2[idKey] === v[idKey]))
+  );
 }
 
 export default function (node: FormKitNode): void {
@@ -57,14 +59,18 @@ export default function (node: FormKitNode): void {
             }
 
             node.input(
-              mergeArrays(node._value as any[], [
-                {
-                  [idKey]: _id,
-                  [nameKey]: file.name,
-                  [srcKey]: file,
-                  ...uploadStatus,
-                },
-              ])
+              mergeArrays(
+                node._value as any[],
+                [
+                  {
+                    [idKey]: _id,
+                    [nameKey]: file.name,
+                    [srcKey]: file,
+                    ...uploadStatus,
+                  },
+                ],
+                idKey
+              )
             );
 
             if (hasUploadHandler) {
@@ -81,9 +87,11 @@ export default function (node: FormKitNode): void {
               Promise.resolve(node.props.uploadHandler(file, node))
                 .then((src) => {
                   node.input(
-                    mergeArrays(node._value as any[], [
-                      { [idKey]: _id, [nameKey]: file.name, [srcKey]: src },
-                    ])
+                    mergeArrays(
+                      node._value as any[],
+                      [{ [idKey]: _id, [nameKey]: file.name, [srcKey]: src }],
+                      idKey
+                    )
                   );
                 })
                 .catch((err) => {
